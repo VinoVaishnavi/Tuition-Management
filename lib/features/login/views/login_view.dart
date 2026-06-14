@@ -131,7 +131,7 @@ class LoginView extends StatelessWidget {
   }
 }
 
-class _LoginTextField extends StatelessWidget {
+class _LoginTextField extends StatefulWidget {
   const _LoginTextField({
     required this.controller,
     required this.hintText,
@@ -149,15 +149,38 @@ class _LoginTextField extends StatelessWidget {
   final TextInputAction? textInputAction;
 
   @override
+  State<_LoginTextField> createState() => _LoginTextFieldState();
+}
+
+class _LoginTextFieldState extends State<_LoginTextField> {
+  bool _isPasswordVisible = false;
+
+  @override
   Widget build(BuildContext context) {
     return TextField(
-      controller: controller,
-      obscureText: obscureText,
-      keyboardType: keyboardType,
-      textInputAction: textInputAction,
+      controller: widget.controller,
+      obscureText: widget.obscureText && !_isPasswordVisible,
+      keyboardType: widget.keyboardType,
+      textInputAction: widget.textInputAction,
       decoration: InputDecoration(
-        hintText: hintText,
-        prefixIcon: Icon(prefixIcon, color: AppColors.textSecondary),
+        hintText: widget.hintText,
+        prefixIcon: Icon(widget.prefixIcon, color: AppColors.textSecondary),
+        suffixIcon: widget.obscureText
+            ? IconButton(
+                tooltip: _isPasswordVisible ? "Hide password" : "Show password",
+                onPressed: () {
+                  setState(() {
+                    _isPasswordVisible = !_isPasswordVisible;
+                  });
+                },
+                icon: Icon(
+                  _isPasswordVisible
+                      ? Icons.visibility_off_outlined
+                      : Icons.visibility_outlined,
+                  color: AppColors.textSecondary,
+                ),
+              )
+            : null,
         filled: true,
         fillColor: AppColors.inputFill,
         contentPadding: const EdgeInsets.symmetric(
