@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../features/home/views/home_view.dart';
+import 'package:tuition_app/core/constants/app_colors.dart';
+import 'package:tuition_app/features/login/views/login_view.dart';
 
 class TuitionApp extends StatelessWidget {
   const TuitionApp({super.key});
@@ -9,12 +10,17 @@ class TuitionApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Tuition App',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: AppColors.primary,
+          primary: AppColors.primary,
+          secondary: AppColors.accent,
+          error: AppColors.error,
+        ),
+        scaffoldBackgroundColor: AppColors.background,
         useMaterial3: true,
       ),
-      home: const HomeView(),
+      home: const LoginView(),
     );
   }
 }
