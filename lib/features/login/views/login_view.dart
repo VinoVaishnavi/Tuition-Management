@@ -90,7 +90,8 @@ class LoginView extends StatelessWidget {
                                 content: Text(
                                   success
                                       ? "Login successful"
-                                      : "Invalid Email or Password",
+                                      : vm.errorMessage ??
+                                            "Invalid Email or Password",
                                 ),
                                 backgroundColor: success
                                     ? AppColors.success
