@@ -1,93 +1,89 @@
 import 'package:flutter/material.dart';
-import 'package:tuition_app/services/user_service.dart';
+import 'package:provider/provider.dart';
+import 'package:tuition_app/features/admin/parent_management/view_model/add_parent_view_model.dart';
 
-class AddParentView extends StatefulWidget {
+class AddParentView extends StatelessWidget {
   const AddParentView({super.key});
 
   @override
-  State<AddParentView> createState() => _AddParentViewState();
-}
-
-class _AddParentViewState extends State<AddParentView> {
-  final nameController = TextEditingController();
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  final userService = UserService();
-  bool isPasswordVisible = false;
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Add Parent")),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            TextField(
-              controller: nameController,
-              decoration: const InputDecoration(labelText: "Parent Name"),
-            ),
-
-            const SizedBox(height: 15),
-
-            TextField(
-              controller: emailController,
-              decoration: const InputDecoration(labelText: "Email"),
-            ),
-
-            const SizedBox(height: 15),
-
-            TextField(
-              controller: passwordController,
-              obscureText: !isPasswordVisible,
-              decoration: InputDecoration(
-                labelText: "Password",
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+    return ChangeNotifierProvider(
+      create: (_) => AddParentViewModel(),
+      child: Consumer<AddParentViewModel>(
+        builder: (context, vm, _) {
+          return Scaffold(
+            appBar: AppBar(title: const Text("Add Parent")),
+            body: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  TextField(
+                    controller: vm.nameController,
+                    decoration: const InputDecoration(labelText: "Parent Name"),
                   ),
-                  onPressed: () {
-                    setState(() {
-                      isPasswordVisible = !isPasswordVisible;
-                    });
-                  },
-                ),
-              ),
-            ),
 
-            const SizedBox(height: 25),
+                  const SizedBox(height: 15),
 
-            SizedBox(
-              width: double.infinity,
-              height: 55,
-              child: ElevatedButton(
-                onPressed: () async {
-                  try {
-                    await userService.createUser(
-                      name: nameController.text.trim(),
-                      email: emailController.text.trim(),
-                      password: passwordController.text,
-                      role: "parent",
-                    );
+                  TextField(
+                    controller: vm.emailController,
+                    decoration: const InputDecoration(labelText: "Email"),
+                  ),
 
-                    if (!context.mounted) return;
+                  const SizedBox(height: 15),
 
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text("Parent created successfully"),
+                  TextField(
+                    controller: vm.passwordController,
+                    obscureText: !vm.isPasswordVisible,
+                    decoration: InputDecoration(
+                      labelText: "Password",
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          vm.isPasswordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                        ),
+                        onPressed: vm.togglePasswordVisibility,
                       ),
-                    );
-                  } catch (e) {
-                    ScaffoldMessenger.of(
-                      context,
-                    ).showSnackBar(SnackBar(content: Text(e.toString())));
-                  }
-                },
-                child: const Text("Create Parent"),
+                    ),
+                  ),
+
+                  const SizedBox(height: 25),
+
+                  SizedBox(
+                    width: double.infinity,
+                    height: 55,
+                    child: ElevatedButton(
+                      onPressed: vm.isLoading
+                          ? null
+                          : () async {
+                              try {
+                                await vm.createParent();
+
+                                if (!context.mounted) return;
+
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text("Parent created successfully"),
+                                  ),
+                                );
+                              } catch (e) {
+                                if (!context.mounted) return;
+
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text(e.toString())),
+                                );
+                              }
+                            },
+                      child: vm.isLoading
+                          ? const CircularProgressIndicator()
+                          : const Text("Create Parent"),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
