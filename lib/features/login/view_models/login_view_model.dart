@@ -55,12 +55,13 @@ class LoginViewModel extends ChangeNotifier {
       final userData = userSnapshot.docs.first.data();
       role = userData["role"]?.toString().trim().toLowerCase();
 
-      if (role != "admin") {
-        await _auth.signOut();
-        errorMessage = "You do not have admin access";
-        return false;
-      }
+      // if (role != "admin") {
+      //   await _auth.signOut();
+      //   errorMessage = "You do not have admin access";
+      //   return false;
+      // }
 
+      role = userData["role"]?.toString().trim().toLowerCase();
       return true;
     } on FirebaseAuthException catch (error) {
       errorMessage = _authErrorMessage(error);

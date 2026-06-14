@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tuition_app/core/constants/app_colors.dart';
 import 'package:tuition_app/features/login/view_models/login_view_model.dart';
+import 'package:tuition_app/features/admin/dashboard/view/admin_dashboard_view.dart';
+import 'package:tuition_app/features/parent/dashboard/view/parent_dashboard_view.dart';
+import 'package:tuition_app/features/teacher/dashboard/view/teacher_dashboard_view.dart';
 
 class LoginView extends StatelessWidget {
   const LoginView({super.key});
@@ -85,19 +88,49 @@ class LoginView extends StatelessWidget {
 
                             if (!context.mounted) return;
 
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  success
-                                      ? "Login successful"
-                                      : vm.errorMessage ??
-                                            "Invalid Email or Password",
+                            if (success) {
+                              switch (vm.role) {
+                                case "admin":
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) =>
+                                          const AdminDashboardView(),
+                                    ),
+                                  );
+                                  break;
+
+                                case "teacher":
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) =>
+                                          const TeacherDashboardView(),
+                                    ),
+                                  );
+                                  break;
+
+                                case "parent":
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) =>
+                                          const ParentDashboardView(),
+                                    ),
+                                  );
+                                  break;
+                              }
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    vm.errorMessage ??
+                                        "Invalid Email or Password",
+                                  ),
+                                  backgroundColor: AppColors.error,
                                 ),
-                                backgroundColor: success
-                                    ? AppColors.success
-                                    : AppColors.error,
-                              ),
-                            );
+                              );
+                            }
                           },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primary,
