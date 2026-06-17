@@ -30,7 +30,7 @@ class ParentListView extends StatelessWidget {
         return ListView.separated(
           padding: const EdgeInsets.all(16),
           itemCount: parents.length,
-          separatorBuilder: (_, __) => const SizedBox(height: 12),
+          separatorBuilder: (_, _) => const SizedBox(height: 12),
           itemBuilder: (context, index) {
             final parent = parents[index].data();
             final name = parent["name"]?.toString() ?? "No name";

@@ -16,12 +16,18 @@ class AdminBottomNavigation extends StatelessWidget {
     return BottomNavigationBar(
       currentIndex: currentIndex,
       selectedItemColor: AppColors.primary,
+      type: BottomNavigationBarType.fixed,
       onTap: onTap,
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.dashboard_outlined),
           activeIcon: Icon(Icons.dashboard),
           label: "Dashboard",
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.menu_book_outlined),
+          activeIcon: Icon(Icons.menu_book),
+          label: "Class",
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.school_outlined),

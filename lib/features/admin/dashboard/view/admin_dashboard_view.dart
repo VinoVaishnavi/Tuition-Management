@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tuition_app/core/constants/app_colors.dart';
+import 'package:tuition_app/features/admin/class_management/view/class_list_view.dart';
 import 'package:tuition_app/features/admin/dashboard/view/admin_home_view.dart';
 import 'package:tuition_app/features/admin/teacher_management/view/add_teacher_view.dart';
 import 'package:tuition_app/features/admin/parent_management/view/add_parent_view.dart';
@@ -20,6 +21,10 @@ class AdminDashboardView extends StatelessWidget {
       create: (_) => AdminDashboardViewModel(),
       child: Consumer<AdminDashboardViewModel>(
         builder: (context, vm, _) {
+          final canAddUser =
+              vm.selectedTab == AdminDashboardTab.teachers ||
+              vm.selectedTab == AdminDashboardTab.parents;
+
           return Scaffold(
             appBar: AppBar(
               title: Text(vm.title),
@@ -44,13 +49,13 @@ class AdminDashboardView extends StatelessWidget {
               index: vm.selectedIndex,
               children: const [
                 AdminHomeView(),
+                ClassListView(),
                 TeacherListView(),
                 ParentListView(),
               ],
             ),
-            floatingActionButton: vm.selectedTab == AdminDashboardTab.dashboard
-                ? null
-                : FloatingActionButton(
+            floatingActionButton: canAddUser
+                ? FloatingActionButton(
                     backgroundColor: AppColors.primary,
                     foregroundColor: AppColors.onPrimary,
                     onPressed: () {
@@ -64,7 +69,8 @@ class AdminDashboardView extends StatelessWidget {
                       );
                     },
                     child: const Icon(Icons.add),
-                  ),
+                  )
+                : null,
             bottomNavigationBar: AdminBottomNavigation(
               currentIndex: vm.selectedIndex,
               onTap: vm.changeTab,

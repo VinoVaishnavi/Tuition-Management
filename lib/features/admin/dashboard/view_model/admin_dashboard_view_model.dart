@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-enum AdminDashboardTab { dashboard, teachers, parents }
+enum AdminDashboardTab { dashboard, classes, teachers, parents }
 
 class AdminDashboardViewModel extends ChangeNotifier {
   AdminDashboardTab _selectedTab = AdminDashboardTab.dashboard;
@@ -18,6 +18,8 @@ class AdminDashboardViewModel extends ChangeNotifier {
     switch (_selectedTab) {
       case AdminDashboardTab.dashboard:
         return "Dashboard";
+      case AdminDashboardTab.classes:
+        return "Class";
       case AdminDashboardTab.teachers:
         return "Teachers";
       case AdminDashboardTab.parents:
