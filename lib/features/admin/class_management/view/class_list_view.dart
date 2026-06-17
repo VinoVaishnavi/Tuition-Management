@@ -1,41 +1,60 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:tuition_app/core/constants/app_colors.dart';
+import 'package:tuition_app/services/class_service.dart';
 
 class ClassListView extends StatelessWidget {
   const ClassListView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Padding(
-        padding: EdgeInsets.all(24),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.menu_book_outlined, size: 72, color: AppColors.primary),
-            SizedBox(height: 20),
-            Text(
-              "Class",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: AppColors.textPrimary,
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
+    final classService = ClassService();
+
+    return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+      stream: classService.getClasses(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        if (snapshot.hasError) {
+          return const Center(
+            child: Text("Unable to load classes"),
+          );
+        }
+
+        final classes = snapshot.data?.docs ?? [];
+
+        if (classes.isEmpty) {
+          return const Center(
+            child: Text("No classes added yet"),
+          );
+        }
+
+        return ListView.separated(
+          padding: const EdgeInsets.all(16),
+          itemCount: classes.length,
+          separatorBuilder: (_, _) => const SizedBox(height: 12),
+          itemBuilder: (context, index) {
+            final classData = classes[index].data();
+
+            final className =
+                classData["className"]?.toString() ?? "No Class";
+
+            final section =
+                classData["section"]?.toString() ?? "No Section";
+
+            return ListTile(
+              leading: const CircleAvatar(
+                child: Icon(Icons.class_),
               ),
-            ),
-            SizedBox(height: 10),
-            Text(
-              "Class management will appear here.",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: AppColors.textSecondary,
-                fontSize: 16,
-                height: 1.4,
-              ),
-            ),
-          ],
-        ),
-      ),
+              title: Text(className),
+              subtitle: Text("Section $section"),
+            );
+          },
+        );
+      },
     );
   }
 }

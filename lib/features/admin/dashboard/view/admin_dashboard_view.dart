@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tuition_app/core/constants/app_colors.dart';
+import 'package:tuition_app/features/admin/class_management/view/add_class_view.dart';
 import 'package:tuition_app/features/admin/class_management/view/class_list_view.dart';
 import 'package:tuition_app/features/admin/dashboard/view/admin_home_view.dart';
 import 'package:tuition_app/features/admin/teacher_management/view/add_teacher_view.dart';
@@ -22,6 +23,7 @@ class AdminDashboardView extends StatelessWidget {
       child: Consumer<AdminDashboardViewModel>(
         builder: (context, vm, _) {
           final canAddUser =
+              vm.selectedTab == AdminDashboardTab.classes ||
               vm.selectedTab == AdminDashboardTab.teachers ||
               vm.selectedTab == AdminDashboardTab.parents;
 
@@ -59,9 +61,21 @@ class AdminDashboardView extends StatelessWidget {
                     backgroundColor: AppColors.primary,
                     foregroundColor: AppColors.onPrimary,
                     onPressed: () {
-                      final page = vm.selectedTab == AdminDashboardTab.teachers
-                          ? const AddTeacherView()
-                          : const AddParentView();
+                      late final Widget page;
+
+                      switch (vm.selectedTab) {
+                        case AdminDashboardTab.classes:
+                          page = const AddClassView();
+                          break;
+                        case AdminDashboardTab.teachers:
+                          page = const AddTeacherView();
+                          break;
+                        case AdminDashboardTab.parents:
+                          page = const AddParentView();
+                          break;
+                        default:
+                          return;
+                      }
 
                       Navigator.push(
                         context,
