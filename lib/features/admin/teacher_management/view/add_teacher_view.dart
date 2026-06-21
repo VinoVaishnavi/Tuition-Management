@@ -70,6 +70,8 @@ class AddTeacherView extends StatelessWidget {
                                     ),
                                   ),
                                 );
+
+                                Navigator.pop(context);
                               } catch (e) {
                                 if (!context.mounted) return;
 
