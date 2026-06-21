@@ -68,16 +68,24 @@ class UserService {
     required String userId,
     required String name,
     required String email,
-    required String classId,
-    required String className,
+    String? classId,
+    String? className,
   }) async {
-    await _firestore.collection('users').doc(userId).update({
+    final data = <String, dynamic>{
       'name': name,
       'email': email,
-      'classId': classId,
-      'className': className,
       'updatedAt': FieldValue.serverTimestamp(),
-    });
+    };
+
+    if (classId != null) {
+      data['classId'] = classId;
+      data['className'] = className;
+    } else {
+      data['classId'] = FieldValue.delete();
+      data['className'] = FieldValue.delete();
+    }
+
+    await _firestore.collection('users').doc(userId).update(data);
   }
 
   Future<void> deleteUser({

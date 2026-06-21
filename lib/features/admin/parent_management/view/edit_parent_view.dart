@@ -57,10 +57,6 @@ class _EditParentViewState extends State<EditParentView> {
       throw Exception("Email is required");
     }
 
-    if (selectedClass == null) {
-      throw Exception("Select a class");
-    }
-
     setState(() => _isLoading = true);
 
     try {
@@ -68,8 +64,8 @@ class _EditParentViewState extends State<EditParentView> {
         userId: widget.parentId,
         name: name,
         email: email,
-        classId: selectedClass.id,
-        className: selectedClass.className,
+        classId: selectedClass?.id,
+        className: selectedClass?.className,
       );
     } finally {
       if (mounted) {
@@ -112,16 +108,6 @@ class _EditParentViewState extends State<EditParentView> {
                 final classes =
                     snapshot.data?.docs.map(ClassOption.fromDoc).toList() ?? [];
 
-                if (classes.isEmpty) {
-                  return const Text(
-                    "Please create class first",
-                    style: TextStyle(
-                      color: Colors.red,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  );
-                }
-
                 if (_selectedClass == null && widget.initialClassId != null) {
                   for (final classOption in classes) {
                     if (classOption.id == widget.initialClassId) {
@@ -131,15 +117,23 @@ class _EditParentViewState extends State<EditParentView> {
                   }
                 }
 
-                return DropdownButtonFormField<ClassOption>(
+                return DropdownButtonFormField<ClassOption?>(
                   value: _selectedClass,
-                  decoration: const InputDecoration(labelText: "Assign Class"),
-                  items: classes.map((classOption) {
-                    return DropdownMenuItem<ClassOption>(
-                      value: classOption,
-                      child: Text(classOption.displayName),
-                    );
-                  }).toList(),
+                  decoration: const InputDecoration(
+                    labelText: "Assign Class (Optional)",
+                  ),
+                  items: [
+                    const DropdownMenuItem<ClassOption?>(
+                      value: null,
+                      child: Text("Select Class"),
+                    ),
+                    ...classes.map((classOption) {
+                      return DropdownMenuItem<ClassOption?>(
+                        value: classOption,
+                        child: Text(classOption.displayName),
+                      );
+                    }),
+                  ],
                   onChanged: _isLoading
                       ? null
                       : (classOption) {
