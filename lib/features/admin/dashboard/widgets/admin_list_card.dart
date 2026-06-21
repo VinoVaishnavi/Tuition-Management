@@ -7,12 +7,14 @@ class AdminListCard extends StatelessWidget {
     required this.icon,
     required this.title,
     required this.subtitle,
+    this.detailText,
     this.trailingText,
   });
 
   final IconData icon;
   final String title;
   final String subtitle;
+  final String? detailText;
   final String? trailingText;
 
   @override
@@ -60,6 +62,19 @@ class AdminListCard extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
+                if (detailText != null) ...[
+                  const SizedBox(height: 4),
+                  Text(
+                    detailText!,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      color: AppColors.textSecondary,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
               ],
             ),
           ),

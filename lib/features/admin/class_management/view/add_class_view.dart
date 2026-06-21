@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tuition_app/features/admin/class_management/view_model/add_class_view_model.dart';
@@ -15,9 +16,10 @@ class AddClassView extends StatelessWidget {
             appBar: AppBar(
               title: const Text("Add Class"),
             ),
-            body: Padding(
+            body: SingleChildScrollView(
               padding: const EdgeInsets.all(16),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   TextField(
                     controller: vm.classNameController,
@@ -33,6 +35,57 @@ class AddClassView extends StatelessWidget {
                     decoration: const InputDecoration(
                       labelText: "Section",
                     ),
+                  ),
+
+                  const SizedBox(height: 15),
+
+                  TextField(
+                    controller: vm.feesController,
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
+                    decoration: const InputDecoration(
+                      labelText: "Class Fees",
+                      prefixText: "Rs. ",
+                    ),
+                  ),
+
+                  const SizedBox(height: 15),
+
+                  StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                    stream: vm.teachersStream,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const LinearProgressIndicator();
+                      }
+
+                      if (snapshot.hasError) {
+                        return const Text("Unable to load teachers");
+                      }
+
+                      final teachers = snapshot.data?.docs
+                              .map(TeacherOption.fromDoc)
+                              .toList() ??
+                          [];
+
+                      if (teachers.isEmpty) {
+                        return const Text("No teachers available");
+                      }
+
+                      return DropdownButtonFormField<TeacherOption>(
+                        value: vm.selectedTeacher,
+                        decoration: const InputDecoration(
+                          labelText: "Assign Teacher",
+                        ),
+                        items: teachers.map((teacher) {
+                          return DropdownMenuItem<TeacherOption>(
+                            value: teacher,
+                            child: Text(teacher.name),
+                          );
+                        }).toList(),
+                        onChanged: vm.isLoading ? null : vm.selectTeacher,
+                      );
+                    },
                   ),
 
                   const SizedBox(height: 25),
@@ -69,7 +122,9 @@ class AddClassView extends StatelessWidget {
                               }
                             },
                       child: vm.isLoading
-                          ? const CircularProgressIndicator()
+                          ? const CircularProgressIndicator(
+                              color: Colors.white,
+                            )
                           : const Text("Create Class"),
                     ),
                   ),

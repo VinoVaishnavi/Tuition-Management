@@ -47,15 +47,30 @@ class ClassListView extends StatelessWidget {
 
             final section =
                 classData["section"]?.toString() ?? "No Section";
+            final classFees = _formatFees(classData["classFees"]);
+            final teacherName =
+                classData["teacherName"]?.toString() ?? "No teacher assigned";
 
             return AdminListCard(
               icon: Icons.class_outlined,
               title: className,
               subtitle: "Section $section",
+              detailText: "Fees: $classFees | Teacher: $teacherName",
             );
           },
         );
       },
     );
+  }
+
+  String _formatFees(Object? value) {
+    final fees = value is num ? value : num.tryParse(value?.toString() ?? "");
+    if (fees == null) return "Not set";
+
+    if (fees % 1 == 0) {
+      return "Rs. ${fees.toInt()}";
+    }
+
+    return "Rs. ${fees.toStringAsFixed(2)}";
   }
 }

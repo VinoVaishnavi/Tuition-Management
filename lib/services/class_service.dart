@@ -6,10 +6,18 @@ class ClassService {
   Future<void> createClass({
     required String className,
     required String section,
+    required double classFees,
+    required String teacherId,
+    required String teacherName,
+    required String teacherEmail,
   }) async {
     await _firestore.collection('classes').add({
       'className': className,
       'section': section,
+      'classFees': classFees,
+      'teacherId': teacherId,
+      'teacherName': teacherName,
+      'teacherEmail': teacherEmail,
       'createdAt': FieldValue.serverTimestamp(),
     });
   }
