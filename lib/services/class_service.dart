@@ -29,10 +29,22 @@ class ClassService {
     return _firestore.collection('classes').snapshots();
   }
 
+  Stream<DocumentSnapshot<Map<String, dynamic>>> getClassById(String classId) {
+    return _firestore.collection('classes').doc(classId).snapshots();
+  }
+
   Stream<QuerySnapshot<Map<String, dynamic>>> getTeachers() {
     return _firestore
         .collection('users')
         .where('role', isEqualTo: 'teacher')
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getParentsByClassId(String classId) {
+    return _firestore
+        .collection('users')
+        .where('role', isEqualTo: 'parent')
+        .where('classId', isEqualTo: classId)
         .snapshots();
   }
 

@@ -9,6 +9,7 @@ class AdminListCard extends StatelessWidget {
     this.subtitle,
     this.detailText,
     this.trailingText,
+    this.onTap,
     this.onEdit,
     this.onDelete,
   });
@@ -18,6 +19,7 @@ class AdminListCard extends StatelessWidget {
   final String? subtitle;
   final String? detailText;
   final String? trailingText;
+  final VoidCallback? onTap;
   final VoidCallback? onEdit;
   final VoidCallback? onDelete;
 
@@ -37,94 +39,98 @@ class AdminListCard extends StatelessWidget {
           ),
         ],
       ),
-      child: Row(
-        children: [
-          _GradientIcon(icon: icon),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(8),
+        child: Row(
+          children: [
+            _GradientIcon(icon: icon),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      color: AppColors.textPrimary,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  if (subtitle != null) ...[
+                    const SizedBox(height: 5),
+                    Text(
+                      subtitle!,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        color: AppColors.textSecondary,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                  if (detailText != null) ...[
+                    const SizedBox(height: 4),
+                    Text(
+                      detailText!,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        color: AppColors.textSecondary,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+            if (trailingText != null) ...[
+              const SizedBox(width: 10),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                decoration: BoxDecoration(
+                  color: AppColors.accent.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  trailingText!,
                   style: const TextStyle(
-                    color: AppColors.textPrimary,
-                    fontSize: 16,
+                    color: AppColors.accent,
+                    fontSize: 12,
                     fontWeight: FontWeight.w800,
                   ),
                 ),
-                if (subtitle != null) ...[
-                  const SizedBox(height: 5),
-                  Text(
-                    subtitle!,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      color: AppColors.textSecondary,
-                      fontSize: 13,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-                if (detailText != null) ...[
-                  const SizedBox(height: 4),
-                  Text(
-                    detailText!,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      color: AppColors.textSecondary,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ],
-            ),
-          ),
-          if (trailingText != null) ...[
-            const SizedBox(width: 10),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-              decoration: BoxDecoration(
-                color: AppColors.accent.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(8),
               ),
-              child: Text(
-                trailingText!,
-                style: const TextStyle(
-                  color: AppColors.accent,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w800,
-                ),
+            ],
+            if (onEdit != null || onDelete != null) ...[
+              const SizedBox(width: 8),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (onEdit != null)
+                    IconButton(
+                      tooltip: "Edit",
+                      icon: const Icon(Icons.edit_outlined),
+                      color: AppColors.primary,
+                      onPressed: onEdit,
+                    ),
+                  if (onDelete != null)
+                    IconButton(
+                      tooltip: "Delete",
+                      icon: const Icon(Icons.delete_outline),
+                      color: Colors.red,
+                      onPressed: onDelete,
+                    ),
+                ],
               ),
-            ),
+            ],
           ],
-          if (onEdit != null || onDelete != null) ...[
-            const SizedBox(width: 8),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (onEdit != null)
-                  IconButton(
-                    tooltip: "Edit",
-                    icon: const Icon(Icons.edit_outlined),
-                    color: AppColors.primary,
-                    onPressed: onEdit,
-                  ),
-                if (onDelete != null)
-                  IconButton(
-                    tooltip: "Delete",
-                    icon: const Icon(Icons.delete_outline),
-                    color: Colors.red,
-                    onPressed: onDelete,
-                  ),
-              ],
-            ),
-          ],
-        ],
+        ),
       ),
     );
   }

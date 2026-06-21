@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:tuition_app/features/admin/class_management/view/class_detail_view.dart';
 import 'package:tuition_app/features/admin/class_management/view/edit_class_view.dart';
 import 'package:tuition_app/features/admin/class_management/view_model/add_class_view_model.dart';
 import 'package:tuition_app/features/admin/dashboard/widgets/admin_list_card.dart';
@@ -219,6 +220,17 @@ class _ClassCardsList extends StatelessWidget {
           icon: Icons.class_outlined,
           title: className,
           detailText: "Fees: $classFees | Teacher: $teacherName",
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => ClassDetailView(
+                  classId: classId,
+                  className: className,
+                ),
+              ),
+            );
+          },
           onEdit: () {
             Navigator.push(
               context,
