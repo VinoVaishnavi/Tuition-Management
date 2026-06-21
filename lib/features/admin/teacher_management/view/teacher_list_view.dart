@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:tuition_app/features/admin/dashboard/view_model/admin_dashboard_view_model.dart';
 import 'package:tuition_app/features/admin/dashboard/widgets/admin_list_card.dart';
 import 'package:tuition_app/features/admin/teacher_management/view/edit_teacher_view.dart';
+import 'package:tuition_app/features/admin/teacher_management/view/teacher_detail_view.dart';
 import 'package:tuition_app/services/user_service.dart';
 
 class TeacherListView extends StatelessWidget {
@@ -52,6 +53,18 @@ class TeacherListView extends StatelessWidget {
               icon: Icons.school_outlined,
               title: name,
               subtitle: email,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => TeacherDetailView(
+                      teacherId: teacherId,
+                      teacherName: name,
+                      teacherEmail: email,
+                    ),
+                  ),
+                );
+              },
               onEdit: () {
                 Navigator.push(
                   context,
