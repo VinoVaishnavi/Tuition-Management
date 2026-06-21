@@ -9,6 +9,8 @@ class AdminListCard extends StatelessWidget {
     required this.subtitle,
     this.detailText,
     this.trailingText,
+    this.onEdit,
+    this.onDelete,
   });
 
   final IconData icon;
@@ -16,6 +18,8 @@ class AdminListCard extends StatelessWidget {
   final String subtitle;
   final String? detailText;
   final String? trailingText;
+  final VoidCallback? onEdit;
+  final VoidCallback? onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -94,6 +98,28 @@ class AdminListCard extends StatelessWidget {
                   fontWeight: FontWeight.w800,
                 ),
               ),
+            ),
+          ],
+          if (onEdit != null || onDelete != null) ...[
+            const SizedBox(width: 8),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (onEdit != null)
+                  IconButton(
+                    tooltip: "Edit",
+                    icon: const Icon(Icons.edit_outlined),
+                    color: AppColors.primary,
+                    onPressed: onEdit,
+                  ),
+                if (onDelete != null)
+                  IconButton(
+                    tooltip: "Delete",
+                    icon: const Icon(Icons.delete_outline),
+                    color: Colors.red,
+                    onPressed: onDelete,
+                  ),
+              ],
             ),
           ],
         ],
