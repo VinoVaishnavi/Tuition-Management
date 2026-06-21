@@ -33,59 +33,45 @@ class _ClassDetailViewState extends State<ClassDetailView> {
           // Segment selector
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-            child: Container(
-              decoration: BoxDecoration(
-                color: AppColors.inputBorder.withValues(alpha: 0.3),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () => setState(() => _showTeacher = true),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        decoration: BoxDecoration(
-                          color: _showTeacher ? AppColors.primary : Colors.transparent,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Center(
-                          child: Text(
-                            "Teacher",
-                            style: TextStyle(
-                              color: _showTeacher ? Colors.white : AppColors.textSecondary,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 15,
-                            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () => setState(() => _showTeacher = true),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      child: Center(
+                        child: Text(
+                          "Teacher",
+                          style: TextStyle(
+                            color: _showTeacher ? AppColors.primary : AppColors.textSecondary,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 15,
                           ),
                         ),
                       ),
                     ),
                   ),
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () => setState(() => _showTeacher = false),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        decoration: BoxDecoration(
-                          color: !_showTeacher ? AppColors.primary : Colors.transparent,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Center(
-                          child: Text(
-                            "Parent",
-                            style: TextStyle(
-                              color: !_showTeacher ? Colors.white : AppColors.textSecondary,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 15,
-                            ),
+                ),
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () => setState(() => _showTeacher = false),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      child: Center(
+                        child: Text(
+                          "Parent",
+                          style: TextStyle(
+                            color: !_showTeacher ? AppColors.primary : AppColors.textSecondary,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 15,
                           ),
                         ),
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
           const SizedBox(height: 8),
