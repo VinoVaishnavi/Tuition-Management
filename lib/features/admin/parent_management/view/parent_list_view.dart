@@ -214,10 +214,7 @@ class _ParentCardsList extends StatelessWidget {
         final email = parent["email"]?.toString() ?? "No email";
         final className =
             parent["className"]?.toString() ?? "No class assigned";
-        final section = parent["section"]?.toString();
-        final classText = section == null
-            ? className
-            : "$className - Section $section";
+        final classText = className;
 
         return AdminListCard(
           icon: Icons.people_outline,
