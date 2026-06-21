@@ -67,7 +67,7 @@ class AddClassView extends StatelessWidget {
                         items: [
                           const DropdownMenuItem<TeacherOption?>(
                             value: null,
-                            child: Text("None"),
+                            child: Text("Select Teacher"),
                           ),
                           ...teachers.map((teacher) {
                             return DropdownMenuItem<TeacherOption?>(
