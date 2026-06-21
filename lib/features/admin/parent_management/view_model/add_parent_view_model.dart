@@ -57,10 +57,6 @@ class AddParentViewModel extends ChangeNotifier {
       throw Exception("Password is required");
     }
 
-    if (selectedClass == null) {
-      throw Exception("Select a class");
-    }
-
     _isLoading = true;
     notifyListeners();
 
@@ -70,8 +66,8 @@ class AddParentViewModel extends ChangeNotifier {
         email: email,
         password: password,
         role: "parent",
-        classId: selectedClass.id,
-        className: selectedClass.className,
+        classId: selectedClass?.id,
+        className: selectedClass?.className,
       );
     } finally {
       _isLoading = false;

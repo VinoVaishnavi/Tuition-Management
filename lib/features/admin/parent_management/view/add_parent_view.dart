@@ -72,17 +72,23 @@ class AddParentView extends StatelessWidget {
                         return const Text("No classes available");
                       }
 
-                      return DropdownButtonFormField<ClassOption>(
+                      return DropdownButtonFormField<ClassOption?>(
                         value: vm.selectedClass,
                         decoration: const InputDecoration(
-                          labelText: "Assign Class",
+                          labelText: "Assign Class (Optional)",
                         ),
-                        items: classes.map((classOption) {
-                          return DropdownMenuItem<ClassOption>(
-                            value: classOption,
-                            child: Text(classOption.displayName),
-                          );
-                        }).toList(),
+                        items: [
+                          const DropdownMenuItem<ClassOption?>(
+                            value: null,
+                            child: Text("Select Class"),
+                          ),
+                          ...classes.map((classOption) {
+                            return DropdownMenuItem<ClassOption?>(
+                              value: classOption,
+                              child: Text(classOption.displayName),
+                            );
+                          }),
+                        ],
                         onChanged: vm.isLoading ? null : vm.selectClass,
                       );
                     },
