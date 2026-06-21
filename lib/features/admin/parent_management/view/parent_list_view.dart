@@ -5,6 +5,7 @@ import 'package:tuition_app/features/admin/class_management/models/class_option.
 import 'package:tuition_app/features/admin/dashboard/view_model/admin_dashboard_view_model.dart';
 import 'package:tuition_app/features/admin/dashboard/widgets/admin_list_card.dart';
 import 'package:tuition_app/features/admin/parent_management/view/edit_parent_view.dart';
+import 'package:tuition_app/features/admin/parent_management/view/parent_detail_view.dart';
 import 'package:tuition_app/services/class_service.dart';
 import 'package:tuition_app/services/user_service.dart';
 
@@ -212,15 +213,27 @@ class _ParentCardsList extends StatelessWidget {
         final parent = parentDoc.data();
         final name = parent["name"]?.toString() ?? "No name";
         final email = parent["email"]?.toString() ?? "No email";
-        final className =
-            parent["className"]?.toString() ?? "No class assigned";
-        final classText = className;
+        // final className =
+        //     parent["className"]?.toString() ?? "No class assigned";
+        // final classText = className;
 
         return AdminListCard(
           icon: Icons.people_outline,
           title: name,
           subtitle: email,
-          detailText: classText,
+          // detailText: classText,
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => ParentDetailView(
+                  parentId: parentId,
+                  parentName: name,
+                  parentEmail: email,
+                ),
+              ),
+            );
+          },
           onEdit: () {
             Navigator.push(
               context,
