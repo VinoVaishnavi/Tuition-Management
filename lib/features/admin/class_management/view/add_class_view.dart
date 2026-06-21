@@ -69,7 +69,13 @@ class AddClassView extends StatelessWidget {
                           [];
 
                       if (teachers.isEmpty) {
-                        return const Text("No teachers available");
+                        return const Text(
+                          "Please create teacher first",
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        );
                       }
 
                       return DropdownButtonFormField<TeacherOption>(

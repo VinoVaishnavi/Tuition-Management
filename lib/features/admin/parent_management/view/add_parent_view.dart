@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tuition_app/features/admin/class_management/models/class_option.dart';
 import 'package:tuition_app/features/admin/parent_management/view_model/add_parent_view_model.dart';
 
 class AddParentView extends StatelessWidget {
@@ -13,9 +15,10 @@ class AddParentView extends StatelessWidget {
         builder: (context, vm, _) {
           return Scaffold(
             appBar: AppBar(title: const Text("Add Parent")),
-            body: Padding(
+            body: SingleChildScrollView(
               padding: const EdgeInsets.all(16),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   TextField(
                     controller: vm.nameController,
@@ -47,6 +50,44 @@ class AddParentView extends StatelessWidget {
                     ),
                   ),
 
+                  const SizedBox(height: 15),
+
+                  StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                    stream: vm.classesStream,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const LinearProgressIndicator();
+                      }
+
+                      if (snapshot.hasError) {
+                        return const Text("Unable to load classes");
+                      }
+
+                      final classes = snapshot.data?.docs
+                              .map(ClassOption.fromDoc)
+                              .toList() ??
+                          [];
+
+                      if (classes.isEmpty) {
+                        return const Text("No classes available");
+                      }
+
+                      return DropdownButtonFormField<ClassOption>(
+                        value: vm.selectedClass,
+                        decoration: const InputDecoration(
+                          labelText: "Assign Class",
+                        ),
+                        items: classes.map((classOption) {
+                          return DropdownMenuItem<ClassOption>(
+                            value: classOption,
+                            child: Text(classOption.displayName),
+                          );
+                        }).toList(),
+                        onChanged: vm.isLoading ? null : vm.selectClass,
+                      );
+                    },
+                  ),
+
                   const SizedBox(height: 25),
 
                   SizedBox(
@@ -66,6 +107,8 @@ class AddParentView extends StatelessWidget {
                                     content: Text("Parent created successfully"),
                                   ),
                                 );
+
+                                Navigator.pop(context);
                               } catch (e) {
                                 if (!context.mounted) return;
 

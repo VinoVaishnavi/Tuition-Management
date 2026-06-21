@@ -42,11 +42,18 @@ class ParentListView extends StatelessWidget {
             final parent = parents[index].data();
             final name = parent["name"]?.toString() ?? "No name";
             final email = parent["email"]?.toString() ?? "No email";
+            final className =
+                parent["className"]?.toString() ?? "No class assigned";
+            final section = parent["section"]?.toString();
+            final classText = section == null
+                ? className
+                : "$className - Section $section";
 
             return AdminListCard(
               icon: Icons.people_outline,
               title: name,
               subtitle: email,
+              detailText: classText,
             );
           },
         );
