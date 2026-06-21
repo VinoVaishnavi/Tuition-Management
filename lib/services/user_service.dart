@@ -12,7 +12,6 @@ class UserService {
     required String role,
     String? classId,
     String? className,
-    String? section,
   }) async {
     UserCredential credential =
         await _auth.createUserWithEmailAndPassword(
@@ -26,11 +25,10 @@ class UserService {
       'role': role,
     };
 
-    if (classId != null && className != null && section != null) {
+    if (classId != null && className != null) {
       userData.addAll({
         'classId': classId,
         'className': className,
-        'section': section,
       });
     }
 
@@ -72,14 +70,12 @@ class UserService {
     required String email,
     required String classId,
     required String className,
-    required String section,
   }) async {
     await _firestore.collection('users').doc(userId).update({
       'name': name,
       'email': email,
       'classId': classId,
       'className': className,
-      'section': section,
       'updatedAt': FieldValue.serverTimestamp(),
     });
   }

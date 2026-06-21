@@ -5,7 +5,6 @@ class ClassService {
 
   Future<void> createClass({
     required String className,
-    required String section,
     required double classFees,
     required String teacherId,
     required String teacherName,
@@ -13,7 +12,6 @@ class ClassService {
   }) async {
     await _firestore.collection('classes').add({
       'className': className,
-      'section': section,
       'classFees': classFees,
       'teacherId': teacherId,
       'teacherName': teacherName,
@@ -36,7 +34,6 @@ class ClassService {
   Future<void> updateClass({
     required String classId,
     required String className,
-    required String section,
     required double classFees,
     required String teacherId,
     required String teacherName,
@@ -47,7 +44,6 @@ class ClassService {
 
     batch.update(classRef, {
       'className': className,
-      'section': section,
       'classFees': classFees,
       'teacherId': teacherId,
       'teacherName': teacherName,
@@ -64,7 +60,6 @@ class ClassService {
     for (final parent in parents.docs) {
       batch.update(parent.reference, {
         'className': className,
-        'section': section,
       });
     }
 

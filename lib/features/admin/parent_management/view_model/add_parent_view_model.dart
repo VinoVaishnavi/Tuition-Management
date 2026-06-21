@@ -72,7 +72,6 @@ class AddParentViewModel extends ChangeNotifier {
         role: "parent",
         classId: selectedClass.id,
         className: selectedClass.className,
-        section: selectedClass.section,
       );
     } finally {
       _isLoading = false;

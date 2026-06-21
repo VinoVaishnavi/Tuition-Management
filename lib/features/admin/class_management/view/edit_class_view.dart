@@ -8,14 +8,12 @@ class EditClassView extends StatefulWidget {
     super.key,
     required this.classId,
     required this.initialClassName,
-    required this.initialSection,
     required this.initialClassFees,
     required this.initialTeacherId,
   });
 
   final String classId;
   final String initialClassName;
-  final String initialSection;
   final double initialClassFees;
   final String? initialTeacherId;
 
@@ -25,7 +23,6 @@ class EditClassView extends StatefulWidget {
 
 class _EditClassViewState extends State<EditClassView> {
   late final TextEditingController _classNameController;
-  late final TextEditingController _sectionController;
   late final TextEditingController _feesController;
   final ClassService _classService = ClassService();
   TeacherOption? _selectedTeacher;
@@ -35,7 +32,6 @@ class _EditClassViewState extends State<EditClassView> {
   void initState() {
     super.initState();
     _classNameController = TextEditingController(text: widget.initialClassName);
-    _sectionController = TextEditingController(text: widget.initialSection);
     _feesController = TextEditingController(
       text: _formatInitialFees(widget.initialClassFees),
     );
@@ -44,23 +40,17 @@ class _EditClassViewState extends State<EditClassView> {
   @override
   void dispose() {
     _classNameController.dispose();
-    _sectionController.dispose();
     _feesController.dispose();
     super.dispose();
   }
 
   Future<void> _saveClass() async {
     final className = _classNameController.text.trim();
-    final section = _sectionController.text.trim();
     final classFees = double.tryParse(_feesController.text.trim());
     final selectedTeacher = _selectedTeacher;
 
     if (className.isEmpty) {
       throw Exception("Class name is required");
-    }
-
-    if (section.isEmpty) {
-      throw Exception("Section is required");
     }
 
     if (classFees == null || classFees <= 0) {
@@ -77,7 +67,6 @@ class _EditClassViewState extends State<EditClassView> {
       await _classService.updateClass(
         classId: widget.classId,
         className: className,
-        section: section,
         classFees: classFees,
         teacherId: selectedTeacher.id,
         teacherName: selectedTeacher.name,
@@ -110,11 +99,6 @@ class _EditClassViewState extends State<EditClassView> {
             TextField(
               controller: _classNameController,
               decoration: const InputDecoration(labelText: "Class Name"),
-            ),
-            const SizedBox(height: 15),
-            TextField(
-              controller: _sectionController,
-              decoration: const InputDecoration(labelText: "Section"),
             ),
             const SizedBox(height: 15),
             TextField(

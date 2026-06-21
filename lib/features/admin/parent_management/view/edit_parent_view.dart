@@ -70,7 +70,6 @@ class _EditParentViewState extends State<EditParentView> {
         email: email,
         classId: selectedClass.id,
         className: selectedClass.className,
-        section: selectedClass.section,
       );
     } finally {
       if (mounted) {

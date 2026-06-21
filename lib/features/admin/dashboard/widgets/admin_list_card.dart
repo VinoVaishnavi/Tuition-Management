@@ -6,7 +6,7 @@ class AdminListCard extends StatelessWidget {
     super.key,
     required this.icon,
     required this.title,
-    required this.subtitle,
+    this.subtitle,
     this.detailText,
     this.trailingText,
     this.onEdit,
@@ -15,7 +15,7 @@ class AdminListCard extends StatelessWidget {
 
   final IconData icon;
   final String title;
-  final String subtitle;
+  final String? subtitle;
   final String? detailText;
   final String? trailingText;
   final VoidCallback? onEdit;
@@ -55,17 +55,19 @@ class AdminListCard extends StatelessWidget {
                     fontWeight: FontWeight.w800,
                   ),
                 ),
-                const SizedBox(height: 5),
-                Text(
-                  subtitle,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: AppColors.textSecondary,
-                    fontSize: 13,
-                    fontWeight: FontWeight.w500,
+                if (subtitle != null) ...[
+                  const SizedBox(height: 5),
+                  Text(
+                    subtitle!,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      color: AppColors.textSecondary,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
-                ),
+                ],
                 if (detailText != null) ...[
                   const SizedBox(height: 4),
                   Text(

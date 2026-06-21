@@ -31,15 +31,6 @@ class AddClassView extends StatelessWidget {
                   const SizedBox(height: 15),
 
                   TextField(
-                    controller: vm.sectionController,
-                    decoration: const InputDecoration(
-                      labelText: "Section",
-                    ),
-                  ),
-
-                  const SizedBox(height: 15),
-
-                  TextField(
                     controller: vm.feesController,
                     keyboardType: const TextInputType.numberWithOptions(
                       decimal: true,

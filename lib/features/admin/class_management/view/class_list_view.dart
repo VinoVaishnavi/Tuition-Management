@@ -209,7 +209,6 @@ class _ClassCardsList extends StatelessWidget {
 
         final className = classData["className"]?.toString() ?? "No Class";
 
-        final section = classData["section"]?.toString() ?? "No Section";
         final classFees = _formatFees(classData["classFees"]);
         final classFeesValue = _parseFees(classData["classFees"]);
         final teacherName =
@@ -219,7 +218,6 @@ class _ClassCardsList extends StatelessWidget {
         return AdminListCard(
           icon: Icons.class_outlined,
           title: className,
-          subtitle: "Section $section",
           detailText: "Fees: $classFees | Teacher: $teacherName",
           onEdit: () {
             Navigator.push(
@@ -228,7 +226,6 @@ class _ClassCardsList extends StatelessWidget {
                 builder: (_) => EditClassView(
                   classId: classId,
                   initialClassName: className,
-                  initialSection: section,
                   initialClassFees: classFeesValue,
                   initialTeacherId: teacherId,
                 ),

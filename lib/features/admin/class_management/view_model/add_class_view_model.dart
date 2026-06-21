@@ -37,7 +37,6 @@ class TeacherOption {
 
 class AddClassViewModel extends ChangeNotifier {
   final classNameController = TextEditingController();
-  final sectionController = TextEditingController();
   final feesController = TextEditingController();
 
   final ClassService _classService;
@@ -69,17 +68,12 @@ class AddClassViewModel extends ChangeNotifier {
 
   Future<void> createClass() async {
     final className = classNameController.text.trim();
-    final section = sectionController.text.trim();
     final feesText = feesController.text.trim();
     final classFees = double.tryParse(feesText);
     final teacher = _selectedTeacher;
 
     if (className.isEmpty) {
       throw Exception("Class name is required");
-    }
-
-    if (section.isEmpty) {
-      throw Exception("Section is required");
     }
 
     if (classFees == null || classFees <= 0) {
@@ -96,7 +90,6 @@ class AddClassViewModel extends ChangeNotifier {
     try {
       await _classService.createClass(
         className: className,
-        section: section,
         classFees: classFees,
         teacherId: teacher.id,
         teacherName: teacher.name,
@@ -111,7 +104,6 @@ class AddClassViewModel extends ChangeNotifier {
   @override
   void dispose() {
     classNameController.dispose();
-    sectionController.dispose();
     feesController.dispose();
     super.dispose();
   }
