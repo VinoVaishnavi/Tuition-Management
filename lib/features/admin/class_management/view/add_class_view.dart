@@ -59,27 +59,23 @@ class AddClassView extends StatelessWidget {
                               .toList() ??
                           [];
 
-                      if (teachers.isEmpty) {
-                        return const Text(
-                          "Please create teacher first",
-                          style: TextStyle(
-                            color: Colors.red,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        );
-                      }
-
-                      return DropdownButtonFormField<TeacherOption>(
+                      return DropdownButtonFormField<TeacherOption?>(
                         value: vm.selectedTeacher,
                         decoration: const InputDecoration(
-                          labelText: "Assign Teacher",
+                          labelText: "Assign Teacher (Optional)",
                         ),
-                        items: teachers.map((teacher) {
-                          return DropdownMenuItem<TeacherOption>(
-                            value: teacher,
-                            child: Text(teacher.name),
-                          );
-                        }).toList(),
+                        items: [
+                          const DropdownMenuItem<TeacherOption?>(
+                            value: null,
+                            child: Text("None"),
+                          ),
+                          ...teachers.map((teacher) {
+                            return DropdownMenuItem<TeacherOption?>(
+                              value: teacher,
+                              child: Text(teacher.name),
+                            );
+                          }),
+                        ],
                         onChanged: vm.isLoading ? null : vm.selectTeacher,
                       );
                     },

@@ -57,10 +57,6 @@ class _EditClassViewState extends State<EditClassView> {
       throw Exception("Enter valid class fees");
     }
 
-    if (selectedTeacher == null) {
-      throw Exception("Please assign a teacher");
-    }
-
     setState(() => _isLoading = true);
 
     try {
@@ -68,9 +64,9 @@ class _EditClassViewState extends State<EditClassView> {
         classId: widget.classId,
         className: className,
         classFees: classFees,
-        teacherId: selectedTeacher.id,
-        teacherName: selectedTeacher.name,
-        teacherEmail: selectedTeacher.email,
+        teacherId: selectedTeacher?.id,
+        teacherName: selectedTeacher?.name,
+        teacherEmail: selectedTeacher?.email,
       );
     } finally {
       if (mounted) {
@@ -127,16 +123,6 @@ class _EditClassViewState extends State<EditClassView> {
                     snapshot.data?.docs.map(TeacherOption.fromDoc).toList() ??
                         [];
 
-                if (teachers.isEmpty) {
-                  return const Text(
-                    "Please create teacher first",
-                    style: TextStyle(
-                      color: Colors.red,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  );
-                }
-
                 if (_selectedTeacher == null &&
                     widget.initialTeacherId != null) {
                   for (final teacher in teachers) {
@@ -147,15 +133,23 @@ class _EditClassViewState extends State<EditClassView> {
                   }
                 }
 
-                return DropdownButtonFormField<TeacherOption>(
+                return DropdownButtonFormField<TeacherOption?>(
                   value: _selectedTeacher,
-                  decoration: const InputDecoration(labelText: "Assign Teacher"),
-                  items: teachers.map((teacher) {
-                    return DropdownMenuItem<TeacherOption>(
-                      value: teacher,
-                      child: Text(teacher.name),
-                    );
-                  }).toList(),
+                  decoration: const InputDecoration(
+                    labelText: "Assign Teacher (Optional)",
+                  ),
+                  items: [
+                    const DropdownMenuItem<TeacherOption?>(
+                      value: null,
+                      child: Text("None"),
+                    ),
+                    ...teachers.map((teacher) {
+                      return DropdownMenuItem<TeacherOption?>(
+                        value: teacher,
+                        child: Text(teacher.name),
+                      );
+                    }),
+                  ],
                   onChanged: _isLoading
                       ? null
                       : (teacher) {

@@ -6,18 +6,23 @@ class ClassService {
   Future<void> createClass({
     required String className,
     required double classFees,
-    required String teacherId,
-    required String teacherName,
-    required String teacherEmail,
+    String? teacherId,
+    String? teacherName,
+    String? teacherEmail,
   }) async {
-    await _firestore.collection('classes').add({
+    final data = <String, dynamic>{
       'className': className,
       'classFees': classFees,
-      'teacherId': teacherId,
-      'teacherName': teacherName,
-      'teacherEmail': teacherEmail,
       'createdAt': FieldValue.serverTimestamp(),
-    });
+    };
+
+    if (teacherId != null) {
+      data['teacherId'] = teacherId;
+      data['teacherName'] = teacherName;
+      data['teacherEmail'] = teacherEmail;
+    }
+
+    await _firestore.collection('classes').add(data);
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getClasses() {
@@ -35,21 +40,30 @@ class ClassService {
     required String classId,
     required String className,
     required double classFees,
-    required String teacherId,
-    required String teacherName,
-    required String teacherEmail,
+    String? teacherId,
+    String? teacherName,
+    String? teacherEmail,
   }) async {
     final batch = _firestore.batch();
     final classRef = _firestore.collection('classes').doc(classId);
 
-    batch.update(classRef, {
+    final data = <String, dynamic>{
       'className': className,
       'classFees': classFees,
-      'teacherId': teacherId,
-      'teacherName': teacherName,
-      'teacherEmail': teacherEmail,
       'updatedAt': FieldValue.serverTimestamp(),
-    });
+    };
+
+    if (teacherId != null) {
+      data['teacherId'] = teacherId;
+      data['teacherName'] = teacherName;
+      data['teacherEmail'] = teacherEmail;
+    } else {
+      data['teacherId'] = FieldValue.delete();
+      data['teacherName'] = FieldValue.delete();
+      data['teacherEmail'] = FieldValue.delete();
+    }
+
+    batch.update(classRef, data);
 
     final parents = await _firestore
         .collection('users')

@@ -80,10 +80,6 @@ class AddClassViewModel extends ChangeNotifier {
       throw Exception("Enter valid class fees");
     }
 
-    if (teacher == null) {
-      throw Exception("Please assign a teacher");
-    }
-
     _isLoading = true;
     notifyListeners();
 
@@ -91,9 +87,9 @@ class AddClassViewModel extends ChangeNotifier {
       await _classService.createClass(
         className: className,
         classFees: classFees,
-        teacherId: teacher.id,
-        teacherName: teacher.name,
-        teacherEmail: teacher.email,
+        teacherId: teacher?.id,
+        teacherName: teacher?.name,
+        teacherEmail: teacher?.email,
       );
     } finally {
       _isLoading = false;
